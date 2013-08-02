@@ -14,6 +14,6 @@
     ],
 
     "browser_action" : {
-        "default_icon" : "img/coins.png"
+        "default_icon" : "img/icon.png"
     }
 }
