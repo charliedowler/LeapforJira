@@ -1,30 +1,58 @@
 console.log("LEAP FOR JIRA RUNNING");
-$('body').append($('<div id="cursor" style="position: absolute;z-index:9999;display: block;width:20px;height:20px;background-color: black"></div>'));
 
-var offsetX = 13;
-var offsetY = 10;
-var width = window.innerWidth / 2;
-var height = window.innerHeight / 2;
-var cursor = $('#cursor');
-// Setup Leap loop with frame callback function
-var controllerOptions = {enableGestures: true};
-Leap.loop(controllerOptions, function(frame) {
-    // Body of callback function
-    if (typeof frame.fingers[0] != 'undefined') {
-        var fingerx = frame.fingers[0].tipPosition[0] * offsetX;
-        var fingery = frame.fingers[0].tipPosition[1] * offsetY;
-        var y = (fingery - height) - $(document).scrollTop();
-        var x = width + fingerx;
-        var e = new $.Event('click');
-        cursor.css('left', x);
-        cursor.css('bottom', y);
-        x = cursor.position().left;
-        y = cursor.position().top;
-        cursor.animate({
-            backgroundColor: '#00FF00'
-        }, 100, '', function() {
-            console.log(x, y);
-            $(document.elementFromPoint(x, y)).trigger(e);
-        });
+var circle          = $('<div id="cursorContainer"></div>')
+    .css({
+        "position" : "absolute",
+        "display" : "block",
+        "z-index" : "9999",
+        "width" : "20px",
+        "height" : "20px",
+        "padding" : "20px",
+        "border" : "1px solid #000000",
+        "border-radius" : "25px"
+    });
+
+var cursor          = $('<div id="cursor"></div>')
+    .css({
+    "display" : "block",
+    "width" : "20px",
+    "height" : "20px",
+    "backgroundColor" : "#000000"
+    });
+
+circle.append(cursor);
+$('body').append(circle);
+
+var offsetX             = 13,
+    offsetY             = 10,
+    width               = window.innerWidth / 2,
+    height              = window.innerHeight / 2,
+    x                   = 0,
+    y                   = 0,
+    fingerX             = 0,
+    fingerY             = 0,
+    e                   = new $.Event('click'),
+    controllerOptions   = {enableGestures: true};
+
+Leap.loop(controllerOptions, function(frame)
+{
+
+    if (!_.isUndefined(frame.fingers[0]))
+    {
+
+        fingerX         = frame.fingers[0].tipPosition[0] * offsetX;
+        fingerY         = frame.fingers[0].tipPosition[1] * offsetY;
+
+        y               = (fingerY - height) - $(document).scrollTop();
+        x               = width + fingerX;
+
+        circle.css({'left' : x, 'bottom': y});
+
+        x               = circle.position().left;
+        y               = circle.position().top;
+
+        //click where the user is pointing $(document.elementFromPoint(x, y)).trigger(e);
+
     }
+
 });
