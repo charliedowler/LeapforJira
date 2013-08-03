@@ -9,7 +9,7 @@
         {
             "matches": ["http://*/*", "https://*/*"],
             "run_at" : "document_end",
-            "js": ["lib/jquery.js", "lib/jqueryColor.js", "lib/leap.js", "app.js"]
+            "js": ["lib/jquery.js", "lib/underscore.js", "lib/jqueryColor.js", "lib/leap.js", "app.js"]
         }
     ],
 
